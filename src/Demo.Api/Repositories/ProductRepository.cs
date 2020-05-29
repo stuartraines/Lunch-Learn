@@ -19,13 +19,13 @@ namespace Demo.Api.Repositories
             _appSettings = appSettings;
         }
 
-        public async Task<int?> CreateAsync(string name, decimal price)
+        public async Task<int?> CreateAsync(string name, decimal price, bool active)
         {
             using (var connection = new MySqlConnection(_appSettings.Value.DBConnectionString))
             {
                 SimpleCRUD.SetDialect(Dialect.MySQL);
 
-                return await connection.InsertAsync(new Product { Name = name, Price = price });
+                return await connection.InsertAsync(new Product { Name = name, Price = price, Active = active });
             }
         }
 

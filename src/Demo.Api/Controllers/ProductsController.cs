@@ -27,7 +27,7 @@ namespace Demo.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateProductRequest request)
         {
-            var productId = await this.productRepository.CreateAsync(request.Name, request.Price);
+            var productId = await this.productRepository.CreateAsync(request.Name, request.Price, request.Active);
 
             if (!productId.HasValue)
             {
