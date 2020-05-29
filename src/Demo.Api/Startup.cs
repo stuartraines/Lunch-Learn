@@ -1,4 +1,5 @@
 ﻿using Demo.Api.Configuration;
+using Demo.Api.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +27,8 @@ namespace Demo.Api
             services.Configure<AppSettings>(Configuration);
 
             services.AddDefaultAWSOptions(Configuration.GetAWSOptions());
+
+            services.AddTransient<IProductRepository, ProductRepository>();
 
             services.AddMvcCore()
                 .AddCors()

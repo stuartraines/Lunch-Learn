@@ -1,3 +1,6 @@
+using System.Threading.Tasks;
+using Demo.Api.Models;
+using Demo.Api.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Demo.Api.Controllers
@@ -6,10 +9,34 @@ namespace Demo.Api.Controllers
     [ApiController] 
     public class ProductsController : Controller
     {
-        [HttpGet]
-        public IActionResult List()
+        private readonly IProductRepository productRepository;
+
+        public ProductsController(IProductRepository productRepository)
         {
-            return Ok();
+            this.productRepository = productRepository;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> List()
+        {
+            var products = await this.productRepository.ListAsync();
+
+            return Ok(products);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateProductRequest request)
+        {
+            var productId = await this.productRepository.CreateAsync(request.Name, request.Price);
+
+            if (!productId.HasValue)
+            {
+                return new StatusCodeResult(500);
+            }
+
+            var product = await this.productRepository.GetAsync(productId.Value);
+
+            return Ok(product);
         }
     }
 }
