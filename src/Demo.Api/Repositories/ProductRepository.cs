@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Demo.Api.Configuration;
@@ -44,7 +45,9 @@ namespace Demo.Api.Repositories
             {
                 SimpleCRUD.SetDialect(Dialect.MySQL);
 
-                return await connection.GetListAsync<Product>();
+                var products =  await connection.GetListAsync<Product>();
+
+                return products.Where(p => p.Active);
             }
         }
     }
